@@ -1,0 +1,9 @@
+spring:
+  profiles:
+    active: git
+  cloud:
+    config:
+      server:
+        git:
+          uri: file://${user.dir}
+          search-paths: config-repo
