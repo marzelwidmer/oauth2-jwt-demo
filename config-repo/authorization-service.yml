@@ -11,7 +11,7 @@ server:
   port: 9000
 
 app:
-  feature: feature2
+  feature: feature1
 
 
 # Management
