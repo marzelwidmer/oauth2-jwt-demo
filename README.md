@@ -1,4 +1,8 @@
 # OAuth2-JWT Authorization- Resource Server
+<span style="color:blue">NOTE *blue* 
+Default Spring profile will start H2 Embedded Database, 
+ then you don`t have to start a spring cli H2 database </span>.
+ 
 
 ## Spring CLI
 
@@ -21,14 +25,10 @@ Password:
 Start _AuthorizationService_ with Spring profile _spring-cli_
 
 ```bash
-$ java -jar -Dspring.profiles.active=spring-cli authorization-service/target/authorization-service-0.0.1-SNAPSHOT.jar
+$ java -jar -Dspring.profiles.active=spring-cli \
+    authorization-service/target/authorization-service-0.0.1-SNAPSHOT.jar
 ```
-
-**NOTE:**
-```html
- Default Spring profile will start H2 Embedded Database, then you don`t have to start a spring cli H2 database 
-```
-
+ 
 ## curl
 ```bash
 curl -u clientId:secret -X POST localhost:9000/oauth/token\?grant_type=password\&username=user\&password=pass
