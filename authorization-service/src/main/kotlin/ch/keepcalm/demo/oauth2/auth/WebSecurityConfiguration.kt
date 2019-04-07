@@ -14,9 +14,6 @@ import javax.sql.DataSource
 @EnableWebSecurity
 class WebSecurityConfiguration(private val dataSource: DataSource) : WebSecurityConfigurerAdapter() {
 
-    private var passwordEncoder: PasswordEncoder? = null
-    private var userDetailsService: UserDetailsService? = null
-
     @Throws(Exception::class)
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.userDetailsService(userDetailsService())
@@ -24,26 +21,19 @@ class WebSecurityConfiguration(private val dataSource: DataSource) : WebSecurity
     }
 
     @Bean
+    public override fun userDetailsService(): UserDetailsService =
+            JdbcDaoImpl().also {
+                it.setDataSource(dataSource)
+            }
+
+    @Bean
+    fun passwordEncoder(): PasswordEncoder = DefaultPasswordEncoderFactories.createDelegatingPasswordEncoder()
+
+    @Bean
     @Throws(Exception::class)
     override fun authenticationManagerBean(): AuthenticationManager {
         return super.authenticationManagerBean()
     }
 
-    @Bean
-    fun passwordEncoder(): PasswordEncoder? {
-        if (passwordEncoder == null) {
-            passwordEncoder = DefaultPasswordEncoderFactories.createDelegatingPasswordEncoder()
-        }
-        return passwordEncoder
-    }
-
-    @Bean
-    public override fun userDetailsService(): UserDetailsService {
-        if (userDetailsService == null) {
-            userDetailsService = JdbcDaoImpl()
-            (userDetailsService as JdbcDaoImpl).setDataSource(dataSource)
-        }
-        return userDetailsService as UserDetailsService
-    }
-
 }
+
