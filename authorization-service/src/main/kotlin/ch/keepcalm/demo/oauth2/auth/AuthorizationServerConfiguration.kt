@@ -25,6 +25,7 @@ class AuthorizationServerConfiguration(private val dataSource: DataSource, priva
                                        private val authenticationManager: AuthenticationManager, private val securityProperties: SecurityProperties)
     : AuthorizationServerConfigurerAdapter() {
 
+
     @Throws(Exception::class)
     override fun configure(clients: ClientDetailsServiceConfigurer) {
         clients.jdbc(this.dataSource)
@@ -64,6 +65,4 @@ class AuthorizationServerConfiguration(private val dataSource: DataSource, priva
         JwtAccessTokenConverter().setKeyPair(keyPair)
         return jwtAccessTokenConverter
     }
-
-
 }

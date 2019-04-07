@@ -7,11 +7,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl
+import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.crypto.password.PasswordEncoder
 import javax.sql.DataSource
-import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.http.SessionCreationPolicy
-import org.springframework.security.crypto.factory.PasswordEncoderFactories
+
 
 @EnableWebSecurity
 class WebSecurityConfiguration(private val dataSource: DataSource) : WebSecurityConfigurerAdapter() {
@@ -20,17 +19,6 @@ class WebSecurityConfiguration(private val dataSource: DataSource) : WebSecurity
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.userDetailsService(userDetailsService())
                 .passwordEncoder(passwordEncoder())
-
-    }
-
-    @Throws(Exception::class)
-    override fun configure(http: HttpSecurity) {
-        http
-                .authorizeRequests()
-                .antMatchers("/").permitAll()
-                .and().httpBasic()
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().csrf().disable()
     }
 
     @Bean

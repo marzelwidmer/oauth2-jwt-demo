@@ -1,7 +1,3 @@
 spring:
   application:
     name: authorization-service
-
-#  profiles:
-#    active: spring-cli
-
