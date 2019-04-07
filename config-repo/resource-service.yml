@@ -10,10 +10,6 @@ logging:
 server:
   port: 8080
 
-app:
-  feature: feature2
-
-
 # Management
 management:
   endpoints:

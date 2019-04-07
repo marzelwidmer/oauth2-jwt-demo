@@ -10,10 +10,6 @@ logging:
 server:
   port: 9000
 
-app:
-  feature: feature1
-
-
 # Management
 management:
   endpoints:

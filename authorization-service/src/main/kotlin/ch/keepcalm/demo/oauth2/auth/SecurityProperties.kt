@@ -1,4 +1,4 @@
-package ch.keepcalm.demo.oauth2.res.auth
+package ch.keepcalm.demo.oauth2.auth
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.core.io.Resource

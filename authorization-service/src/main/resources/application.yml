@@ -13,6 +13,14 @@ spring:
     serialization:
       INDENT_OUTPUT: true
 
+# Management
+management:
+  endpoints:
+    web.exposure.include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+
 ---
 spring:
   profiles: spring-cli

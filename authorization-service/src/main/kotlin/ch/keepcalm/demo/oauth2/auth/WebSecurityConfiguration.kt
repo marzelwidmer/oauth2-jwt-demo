@@ -1,4 +1,4 @@
-package ch.keepcalm.demo.oauth2.res.auth
+package ch.keepcalm.demo.oauth2.auth
 
 import org.springframework.context.annotation.Bean
 import org.springframework.security.authentication.AuthenticationManager
@@ -14,6 +14,14 @@ import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder
 import java.util.HashMap
 import javax.sql.DataSource
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers.anyExchange
+import org.springframework.security.authorization.AuthenticatedReactiveAuthorizationManager.authenticated
+import org.springframework.security.config.web.server.ServerHttpSecurity
+import org.springframework.security.web.server.SecurityWebFilterChain
+
+
 
 @EnableWebSecurity
 class WebSecurityConfiguration(private val dataSource: DataSource) : WebSecurityConfigurerAdapter() {
@@ -22,6 +30,17 @@ class WebSecurityConfiguration(private val dataSource: DataSource) : WebSecurity
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.userDetailsService(userDetailsService())
                 .passwordEncoder(passwordEncoder())
+
+    }
+
+    @Throws(Exception::class)
+    override fun configure(http: HttpSecurity) {
+        http
+                .authorizeRequests()
+                .antMatchers("/").permitAll()
+                .and().httpBasic()
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().csrf().disable()
     }
 
     @Bean

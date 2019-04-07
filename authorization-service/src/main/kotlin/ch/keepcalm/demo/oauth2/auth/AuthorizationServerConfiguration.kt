@@ -1,4 +1,4 @@
-package ch.keepcalm.demo.oauth2.res.auth
+package ch.keepcalm.demo.oauth2.auth
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
@@ -22,7 +22,8 @@ import javax.sql.DataSource
 @EnableAuthorizationServer
 @EnableConfigurationProperties(SecurityProperties::class)
 class AuthorizationServerConfiguration(private val dataSource: DataSource, private val passwordEncoder: PasswordEncoder,
-                                       private val authenticationManager: AuthenticationManager, private val securityProperties: SecurityProperties) : AuthorizationServerConfigurerAdapter() {
+                                       private val authenticationManager: AuthenticationManager, private val securityProperties: SecurityProperties)
+    : AuthorizationServerConfigurerAdapter() {
 
     @Throws(Exception::class)
     override fun configure(clients: ClientDetailsServiceConfigurer) {
@@ -63,4 +64,6 @@ class AuthorizationServerConfiguration(private val dataSource: DataSource, priva
         JwtAccessTokenConverter().setKeyPair(keyPair)
         return jwtAccessTokenConverter
     }
+
+
 }
