@@ -1,22 +1,18 @@
 package ch.keepcalm.demo.oauth2
+
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Primary
-import org.springframework.hateoas.*
-import org.springframework.hateoas.config.EnableHypermediaSupport
-import org.springframework.hateoas.server.mvc.add
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression
 import org.springframework.cloud.context.config.annotation.RefreshScope
 import org.springframework.http.ResponseEntity
-import org.springframework.stereotype.Component
 import java.security.Principal
+import org.springframework.hateoas.config.EnableHypermediaSupport
+import org.springframework.hateoas.IanaLinkRelations
+import org.springframework.hateoas.MediaTypes
+import org.springframework.hateoas.RepresentationModel
+import org.springframework.hateoas.server.mvc.add
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 
 fun main(args: Array<String>) {
@@ -25,19 +21,7 @@ fun main(args: Array<String>) {
 
 @SpringBootApplication
 @EnableHypermediaSupport(type = arrayOf(EnableHypermediaSupport.HypermediaType.HAL))
-class AuthorizationService() {}
-
-
-@RestController
-@RequestMapping("/users")
-class UserController {
-
-    @GetMapping("/me")
-    operator fun get(principal: Principal): ResponseEntity<Principal> {
-        return ResponseEntity.ok(principal)
-    }
-
-}
+class AuthorizationService
 
 
 //   _   _    _  _____ _____ ___    _    ____
@@ -53,19 +37,28 @@ open class Index : RepresentationModel<Index>()
 @RefreshScope
 class IndexController {
 
-    @Value("\${app.feature:feature99}")
-    lateinit var feature: String
-
     @GetMapping
     fun api(): Index = Index()
             .apply {
+                add(UserController::class) {
+                    linkTo { whoami(null) } withRel "whoami"
+                }
                 add(IndexController::class) {
                     linkTo { api() } withRel IanaLinkRelations.SELF
-                    when (feature) {
-                        "feature1" -> add(Link("http://api.icndb.com/jokes/random", "chuck-norris"))
-                        "feature2" -> add(Link("http:/google.com", "google"))
-                        "feature3" -> add(Link("https://api.opendota.com/api/heroStats", "heros"))
-                    }
                 }
             }
 }
+
+@RestController
+@RequestMapping("/users", produces = [MediaTypes.HAL_JSON_UTF8_VALUE])
+class UserController {
+
+    @GetMapping("/whoami")
+    fun whoami(principal: Principal?) = principal?.let { ResponseEntity.ok(it) }
+
+
+    @GetMapping("/me")
+    operator fun get(principal: Principal) = whoami(principal)
+}
+
+

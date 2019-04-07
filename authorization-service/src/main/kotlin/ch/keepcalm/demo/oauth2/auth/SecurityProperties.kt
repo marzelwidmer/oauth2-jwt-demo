@@ -6,13 +6,12 @@ import org.springframework.core.io.Resource
 @ConfigurationProperties("security")
 class SecurityProperties {
 
-    var jwt: JwtProperties? = null
+    val jwt = JwtProperties()
 
     class JwtProperties {
-
-        var keyStore: Resource? = null
-        var keyStorePassword: String? = null
-        var keyPairAlias: String? = null
-        var keyPairPassword: String? = null
+        lateinit var keyStore: Resource
+        lateinit var keyStorePassword: String
+        lateinit var keyPairAlias: String
+        lateinit var keyPairPassword: String
     }
 }

@@ -7,8 +7,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.DelegatingPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
-
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
+import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder
+import java.util.HashMap
 import javax.sql.DataSource
 
 @EnableWebSecurity
@@ -27,13 +31,31 @@ class WebSecurityConfiguration(private val dataSource: DataSource) : WebSecurity
             }
 
     @Bean
-    fun passwordEncoder(): PasswordEncoder = DefaultPasswordEncoderFactories.createDelegatingPasswordEncoder()
+    @Throws(Exception::class)
+    override fun authenticationManagerBean(): AuthenticationManager = super.authenticationManagerBean()
 
     @Bean
-    @Throws(Exception::class)
-    override fun authenticationManagerBean(): AuthenticationManager {
-        return super.authenticationManagerBean()
-    }
+    fun passwordEncoder(): PasswordEncoder = delegatingPasswordEncoder()
 
 }
 
+private fun delegatingPasswordEncoder(): PasswordEncoder {
+    val idForEncode = "bcrypt"
+    val encoders = HashMap<String, PasswordEncoder>()
+    encoders[idForEncode] = BCryptPasswordEncoder()
+    encoders["pbkdf2"] = Pbkdf2PasswordEncoder()
+    encoders["scrypt"] = SCryptPasswordEncoder()
+
+    // deprecated encoders
+    encoders["ldap"] = org.springframework.security.crypto.password.LdapShaPasswordEncoder()
+    encoders["MD4"] = org.springframework.security.crypto.password.Md4PasswordEncoder()
+    encoders["MD5"] = org.springframework.security.crypto.password.MessageDigestPasswordEncoder("MD5")
+    encoders["noop"] = org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance()
+    encoders["SHA-1"] = org.springframework.security.crypto.password.MessageDigestPasswordEncoder("SHA-1")
+    encoders["SHA-256"] = org.springframework.security.crypto.password.MessageDigestPasswordEncoder("SHA-256")
+    encoders["sha256"] = org.springframework.security.crypto.password.StandardPasswordEncoder()
+
+    val passwordEncoder = DelegatingPasswordEncoder(idForEncode, encoders)
+    passwordEncoder.setDefaultPasswordEncoderForMatches(BCryptPasswordEncoder(10))
+    return passwordEncoder
+}

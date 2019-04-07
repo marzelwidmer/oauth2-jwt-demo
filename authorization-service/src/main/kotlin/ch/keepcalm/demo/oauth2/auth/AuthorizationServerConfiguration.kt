@@ -16,51 +16,13 @@ import org.springframework.security.oauth2.provider.token.TokenStore
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory
-
 import javax.sql.DataSource
-import java.security.KeyPair
 
 @Configuration
 @EnableAuthorizationServer
 @EnableConfigurationProperties(SecurityProperties::class)
 class AuthorizationServerConfiguration(private val dataSource: DataSource, private val passwordEncoder: PasswordEncoder,
                                        private val authenticationManager: AuthenticationManager, private val securityProperties: SecurityProperties) : AuthorizationServerConfigurerAdapter() {
-
-    private var jwtAccessTokenConverter: JwtAccessTokenConverter? = null
-    private var tokenStore: TokenStore? = null
-
-    @Bean
-    fun tokenStore(): TokenStore {
-        if (tokenStore == null) {
-            tokenStore = JwtTokenStore(jwtAccessTokenConverter())
-        }
-        return tokenStore as TokenStore
-    }
-
-    @Bean
-    fun tokenServices(tokenStore: TokenStore,
-                      clientDetailsService: ClientDetailsService): DefaultTokenServices {
-        val tokenServices = DefaultTokenServices()
-        tokenServices.setSupportRefreshToken(true)
-        tokenServices.setTokenStore(tokenStore)
-        tokenServices.setClientDetailsService(clientDetailsService)
-        tokenServices.setAuthenticationManager(this.authenticationManager)
-        return tokenServices
-    }
-
-    @Bean
-    fun jwtAccessTokenConverter(): JwtAccessTokenConverter {
-        if (jwtAccessTokenConverter != null) {
-            return jwtAccessTokenConverter as JwtAccessTokenConverter
-        }
-
-        val jwtProperties = securityProperties.jwt
-        val keyPair = keyPair(jwtProperties!!, keyStoreKeyFactory(jwtProperties))
-
-        jwtAccessTokenConverter = JwtAccessTokenConverter()
-        jwtAccessTokenConverter!!.setKeyPair(keyPair)
-        return jwtAccessTokenConverter as JwtAccessTokenConverter
-    }
 
     @Throws(Exception::class)
     override fun configure(clients: ClientDetailsServiceConfigurer) {
@@ -78,11 +40,27 @@ class AuthorizationServerConfiguration(private val dataSource: DataSource, priva
                 .checkTokenAccess("isAuthenticated()")
     }
 
-    private fun keyPair(jwtProperties: SecurityProperties.JwtProperties, keyStoreKeyFactory: KeyStoreKeyFactory): KeyPair {
-        return keyStoreKeyFactory.getKeyPair(jwtProperties.keyPairAlias, jwtProperties.keyPairPassword!!.toCharArray())
+    @Bean
+    fun tokenStore(): TokenStore = JwtTokenStore(jwtAccessTokenConverter())
+
+    @Bean
+    fun tokenServices(tokenStore: TokenStore,
+                      clientDetailsService: ClientDetailsService): DefaultTokenServices {
+        val tokenServices = DefaultTokenServices()
+        tokenServices.setSupportRefreshToken(true)
+        tokenServices.setTokenStore(tokenStore)
+        tokenServices.setClientDetailsService(clientDetailsService)
+        tokenServices.setAuthenticationManager(this.authenticationManager)
+        return tokenServices
     }
 
-    private fun keyStoreKeyFactory(jwtProperties: SecurityProperties.JwtProperties): KeyStoreKeyFactory {
-        return KeyStoreKeyFactory(jwtProperties.keyStore, jwtProperties.keyStorePassword!!.toCharArray())
+    @Bean
+    fun jwtAccessTokenConverter(): JwtAccessTokenConverter {
+        val jwtProperties = securityProperties.jwt
+        val keyStoreKeyFactory = KeyStoreKeyFactory(jwtProperties.keyStore, jwtProperties.keyStorePassword.toCharArray())
+        val keyPair = keyStoreKeyFactory.getKeyPair(jwtProperties.keyPairAlias, jwtProperties.keyPairPassword.toCharArray())
+        val jwtAccessTokenConverter = JwtAccessTokenConverter()
+        JwtAccessTokenConverter().setKeyPair(keyPair)
+        return jwtAccessTokenConverter
     }
 }
