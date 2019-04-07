@@ -12,3 +12,11 @@ spring:
   jackson:
     serialization:
       INDENT_OUTPUT: true
+  # H2
+  datasource:
+    url: jdbc:h2:tcp://localhost:9096/mem:test
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+
+
