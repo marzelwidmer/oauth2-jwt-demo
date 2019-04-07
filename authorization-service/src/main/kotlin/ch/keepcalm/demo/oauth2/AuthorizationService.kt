@@ -1,4 +1,4 @@
-package ch.keepcalm.demo.oauth2.auth
+package ch.keepcalm.demo.oauth2
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.web.bind.annotation.RequestParam
@@ -14,7 +14,9 @@ import org.springframework.hateoas.server.mvc.add
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression
 import org.springframework.cloud.context.config.annotation.RefreshScope
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
+import java.security.Principal
 
 
 fun main(args: Array<String>) {
@@ -24,6 +26,18 @@ fun main(args: Array<String>) {
 @SpringBootApplication
 @EnableHypermediaSupport(type = arrayOf(EnableHypermediaSupport.HypermediaType.HAL))
 class AuthorizationService() {}
+
+
+@RestController
+@RequestMapping("/users")
+class UserController {
+
+    @GetMapping("/me")
+    operator fun get(principal: Principal): ResponseEntity<Principal> {
+        return ResponseEntity.ok(principal)
+    }
+
+}
 
 
 //   _   _    _  _____ _____ ___    _    ____

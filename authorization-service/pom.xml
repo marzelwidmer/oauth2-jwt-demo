@@ -22,9 +22,40 @@
 		<spring-plugin.version>2.0.0.BUILD-SNAPSHOT</spring-plugin.version>
 		<evo.version>1.2.2</evo.version>
 		<hamkrest.version>1.7.0.0</hamkrest.version>
+		<spring-security-oauth2-autoconfigure.version>2.1.4.RELEASE</spring-security-oauth2-autoconfigure.version>
 	</properties>
 
 	<dependencies>
+		<!--Security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<!-- Security OAuth2 -->
+		<dependency>
+			<groupId>org.springframework.security.oauth.boot</groupId>
+			<artifactId>spring-security-oauth2-autoconfigure</artifactId>
+			<version>${spring-security-oauth2-autoconfigure.version}</version>
+		</dependency>
+		<!-- Configuration processor -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<!-- JDBC -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+		<!-- H2	-->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+
 		<!-- Spring Web		-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -57,11 +88,6 @@
 			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>com.natpryce</groupId>
-			<artifactId>hamkrest</artifactId>
-			<version>${hamkrest.version}</version>
-		</dependency>
 
 		<!-- Kotlin -->
 		<dependency>
@@ -75,6 +101,12 @@
 		<dependency>
 			<groupId>org.jetbrains.kotlin</groupId>
 			<artifactId>kotlin-stdlib-jdk8</artifactId>
+		</dependency>
+		<!-- Kotlin	Matcher library -->
+		<dependency>
+			<groupId>com.natpryce</groupId>
+			<artifactId>hamkrest</artifactId>
+			<version>${hamkrest.version}</version>
 		</dependency>
 
 		<!-- Test -->
