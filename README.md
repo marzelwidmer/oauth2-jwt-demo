@@ -1,8 +1,6 @@
 # OAuth2-JWT Authorization- Resource Server
-<span style="color:blue">NOTE *blue* 
-Default Spring profile will start H2 Embedded Database, 
- then you don`t have to start a spring cli H2 database </span>.
- 
+
+![#1589F0](https://placehold.it/15/1589F0/000000?text=+) `NOTE : Default Spring profile will start H2 Embedded Database`
 
 ## Spring CLI
 
