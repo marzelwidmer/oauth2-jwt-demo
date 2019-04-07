@@ -1,4 +1,4 @@
-package ch.keepcalm.demo.oauth2
+package ch.keepcalm.demo.oauth2.res
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

@@ -1,6 +1,7 @@
 # OAuth2-JWT Authorization- Resource Server
 
 ## Spring CLI
+
 ### Start H2 Database
 ```bash
 $ spring cloud h2
@@ -16,7 +17,17 @@ JDBC URL:: jdbc:h2:tcp://localhost:9096/mem:test
 User Name: sa
 Password: 
 ```
+### Start Application 
+Start _AuthorizationService_ with Spring profile _spring-cli_
 
+```bash
+$ java -jar -Dspring.profiles.active=spring-cli authorization-service/target/authorization-service-0.0.1-SNAPSHOT.jar
+```
+
+**NOTE:**
+```html
+ Default Spring profile will start H2 Embedded Database, then you don`t have to start a spring cli H2 database 
+```
 
 ## curl
 ```bash

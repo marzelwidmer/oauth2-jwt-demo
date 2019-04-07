@@ -1,4 +1,4 @@
-package ch.keepcalm.demo.featuretoggle
+package ch.keepcalm.demo.oauth2.res
 
 import org.junit.Test
 import org.junit.runner.RunWith
