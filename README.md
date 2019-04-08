@@ -6,7 +6,7 @@
 
 ### Start H2 Database
 ```bash
-$ spring cloud h2
+$ spring cloud h2 configserver
 ```
 
 ### Login 
