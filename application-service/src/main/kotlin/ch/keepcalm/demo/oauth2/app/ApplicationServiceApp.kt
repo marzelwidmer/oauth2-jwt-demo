@@ -8,6 +8,7 @@ import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.config.EnableHypermediaSupport
 import org.springframework.hateoas.server.mvc.add
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.annotation.Secured
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -34,6 +35,10 @@ open class Index : RepresentationModel<Index>()
 @RequestMapping(value = ["/"], produces = [MediaTypes.HAL_JSON_UTF8_VALUE])
 class IndexController {
 
+//    @Secured("IS_AUTHENTICATED_ANONYMOUSLY")
+//    @Secured("ROLE_TELLER")
+//    @PreAuthorize("hasAuthority('ROLE_TELLER')")
+    @PreAuthorize("isAnonymous()")
     @GetMapping
     fun api(): Index = Index()
             .apply {

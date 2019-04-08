@@ -11,7 +11,6 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.crypto.password.PasswordEncoder
 import javax.sql.DataSource
 
-
 @EnableWebSecurity
 class WebSecurityConfiguration(private val dataSource: DataSource) : WebSecurityConfigurerAdapter() {
 
