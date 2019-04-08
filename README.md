@@ -39,6 +39,83 @@ $ http POST :9000/oauth/token grant_type==password username==user password==pass
 
 ## Test token
 ```bash
-http :9000/users/me "Authorization: Bearer $token"
+http :8080/me "Authorization: Bearer $token"
 ```
 
+```bash
+{
+    "authenticated": true,
+    "authorities": [
+        {
+            "authority": "ROLE_USER"
+        }
+    ],
+    "clientOnly": false,
+    "credentials": "",
+    "details": {
+        "decodedDetails": null,
+        "remoteAddress": "0:0:0:0:0:0:0:1",
+        "sessionId": null,
+        "tokenType": "Bearer",
+        "tokenValue": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NTQ3Mzg4NDksInVzZXJfbmFtZSI6InVzZXIiLCJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwianRpIjoiMGM0N2M2OGItZjFkNC00MTFhLWJiODQtNDViMWY1ZjBhZmUwIiwiY2xpZW50X2lkIjoiY2xpZW50SWQiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiXX0.C_clgTqQeDGvq1n7mMj2f5Ctl30S6JbeCFD_Uf_icJZO1J9C6yJg0B3cez3JE3n5K1dfxnzr7FAgd98HPp6OkjbgQ7GvWvhULM2tRy3Tt9bNO4hV3xV5WcWiwBKK8Coha0LZ1NaFgvFb22Ky1H4MUkLmkboiU9G30P0hKUFEBdv1tB9GbPH6Mjt3ue5VLhfhDdiRwk9hn_-lVUPT0o1uWyrQpYIsg_BVvjnJ04LVZOPg4PYiusxEHxFRe79uplOQdTLort96zTEpOQJEktaJbzj2S3wgGTayFAFIx07dqKO-uHadjaLtlKYMdnwbyGKOeKLsJo1Emq4S5eN5ozVXIA"
+    },
+    "name": "user",
+    "oauth2Request": {
+        "approved": true,
+        "authorities": [],
+        "clientId": "clientId",
+        "extensions": {},
+        "grantType": null,
+        "redirectUri": null,
+        "refresh": false,
+        "refreshTokenRequest": null,
+        "requestParameters": {
+            "client_id": "clientId"
+        },
+        "resourceIds": [],
+        "responseTypes": [],
+        "scope": [
+            "read",
+            "write"
+        ]
+    },
+    "principal": "user",
+    "userAuthentication": {
+        "authenticated": true,
+        "authorities": [
+            {
+                "authority": "ROLE_USER"
+            }
+        ],
+        "credentials": "N/A",
+        "details": null,
+        "name": "user",
+        "principal": "user"
+    }
+}
+```
+
+## Create Guest User Token
+```bash
+$ http POST :9000/oauth/token grant_type==password username==guest password==pass -a clientId:secret -v
+```
+Call again API with the _guest_ user
+```bash
+http :8080/users/me "Authorization: Bearer $token"
+```
+```bash
+HTTP/1.1 403
+Cache-Control: no-store
+Content-Type: application/json;charset=UTF-8
+Date: Mon, 08 Apr 2019 15:54:37 GMT
+Pragma: no-cache
+Transfer-Encoding: chunked
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+X-XSS-Protection: 1; mode=block
+
+{
+    "error": "access_denied",
+    "error_description": "Access is denied"
+}
+```
