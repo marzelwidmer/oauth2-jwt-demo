@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ch.keepcalm.demo</groupId>
-    <artifactId>resource-service</artifactId>
+    <artifactId>application-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>resource-service</name>
-    <description>Resource Service</description>
+    <name>application-service</name>
+    <description>Application Resource Service</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -60,7 +60,7 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
-        <!-- Commons IO -->
+        <!-- Commons IO / used to red publicKey file -->
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>

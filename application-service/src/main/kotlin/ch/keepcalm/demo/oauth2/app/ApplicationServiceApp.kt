@@ -2,33 +2,25 @@ package ch.keepcalm.demo.oauth2.app
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Primary
-import org.springframework.hateoas.*
+import org.springframework.hateoas.IanaLinkRelations
+import org.springframework.hateoas.MediaTypes
+import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.config.EnableHypermediaSupport
 import org.springframework.hateoas.server.mvc.add
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression
-import org.springframework.cloud.context.config.annotation.RefreshScope
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.stereotype.Component
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
-
-
-fun main(args: Array<String>) {
-    runApplication<ResourceService>(*args)
-}
 
 @SpringBootApplication
 @EnableHypermediaSupport(type = arrayOf(EnableHypermediaSupport.HypermediaType.HAL))
-class ResourceService() {}
+class ApplicationServiceApp() {}
 
+fun main(args: Array<String>) {
+    runApplication<ApplicationServiceApp>(*args)
+}
 
 //   _   _    _  _____ _____ ___    _    ____
 //  | | | |  / \|_   _| ____/ _ \  / \  / ___|
@@ -39,7 +31,7 @@ class ResourceService() {}
 open class Index : RepresentationModel<Index>()
 
 @RestController
-@RequestMapping("/", produces = [MediaTypes.HAL_JSON_UTF8_VALUE])
+@RequestMapping(value = ["/"], produces = [MediaTypes.HAL_JSON_UTF8_VALUE])
 class IndexController {
 
     @GetMapping
@@ -58,20 +50,19 @@ class IndexController {
 @RequestMapping("/api", produces = [MediaTypes.HAL_JSON_UTF8_VALUE])
 class UserController {
 
-//    @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("/whoami")
+    @PreAuthorize(value = "hasRole('ROLE_USER')")
+    @GetMapping(value = ["/whoami"])
     fun whoami(principal: Principal?) = principal?.let { ResponseEntity.ok(it) }
-
 
 }
 
 
 @RestController
-@RequestMapping("/me")
+@RequestMapping(value = ["/me"])
 class MeController {
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize(value = "hasRole('ROLE_USER')")
     operator fun get(principal: Principal): ResponseEntity<Principal> {
         return ResponseEntity.ok(principal)
     }

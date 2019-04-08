@@ -1,4 +1,4 @@
-package ch.keepcalm.demo.oauth2.app.config
+package ch.keepcalm.demo.oauth2.app
 
 import org.apache.commons.io.IOUtils
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -13,9 +13,6 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices
 import org.springframework.security.oauth2.provider.token.TokenStore
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore
-
-import java.io.IOException
-
 import java.nio.charset.StandardCharsets.UTF_8
 
 @Configuration
@@ -25,20 +22,6 @@ class ResourceServerConfiguration(private val securityProperties: SecurityProper
 
     companion object {
         private val ROOT_PATTERN = "/**"
-    }
-
-    private val publicKeyAsString: String
-        get() {
-            try {
-                return IOUtils.toString(securityProperties.jwt.publicKey.inputStream, UTF_8)
-            } catch (e: IOException) {
-                throw RuntimeException(e)
-            }
-
-        }
-
-    override fun configure(resources: ResourceServerSecurityConfigurer) {
-        resources.tokenStore(tokenStore())
     }
 
     @Throws(Exception::class)
@@ -51,6 +34,10 @@ class ResourceServerConfiguration(private val securityProperties: SecurityProper
                 .antMatchers(HttpMethod.DELETE, ROOT_PATTERN).access("#oauth2.hasScope('write')")
     }
 
+    override fun configure(resources: ResourceServerSecurityConfigurer) {
+        resources.tokenStore(tokenStore())
+    }
+
     @Bean
     fun tokenServices(tokenStore: TokenStore): DefaultTokenServices {
         val tokenServices = DefaultTokenServices()
@@ -61,12 +48,13 @@ class ResourceServerConfiguration(private val securityProperties: SecurityProper
     @Bean
     fun tokenStore(): TokenStore = JwtTokenStore(jwtAccessTokenConverter())
 
-
     @Bean
     fun jwtAccessTokenConverter(): JwtAccessTokenConverter {
         val converter = JwtAccessTokenConverter()
         converter.setVerifierKey(publicKeyAsString)
         return converter
     }
+
+    internal val publicKeyAsString = IOUtils.toString(securityProperties.jwt.publicKey.inputStream, UTF_8)
 
 }

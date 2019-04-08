@@ -1,4 +1,4 @@
-package ch.keepcalm.demo.oauth2.auth.config
+package ch.keepcalm.demo.oauth2.auth
 
 import org.springframework.context.annotation.Bean
 import org.springframework.security.authentication.AuthenticationManager

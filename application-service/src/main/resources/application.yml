@@ -4,7 +4,7 @@ server:
 
 security:
   jwt:
-    public-key: classpath:public.txt
+    public-key: classpath:jwt/public.txt
 
 spring:
   jackson:

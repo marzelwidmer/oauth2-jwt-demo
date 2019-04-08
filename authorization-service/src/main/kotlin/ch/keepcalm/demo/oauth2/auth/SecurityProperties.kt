@@ -1,4 +1,4 @@
-package ch.keepcalm.demo.oauth2.app.config
+package ch.keepcalm.demo.oauth2.auth
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.core.io.Resource
@@ -9,7 +9,9 @@ class SecurityProperties {
     val jwt = JwtProperties()
 
     class JwtProperties {
-        lateinit var publicKey: Resource
+        lateinit var keyStore: Resource
+        lateinit var keyStorePassword: String
+        lateinit var keyPairAlias: String
+        lateinit var keyPairPassword: String
     }
 }
-

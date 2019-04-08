@@ -3,7 +3,7 @@ Follow this guide to [creating self signed certificate](https://dzone.com/articl
 or [spring-boot-ssl-https-example](https://howtodoinjava.com/spring-boot/spring-boot-ssl-https-example/) 
 
 ```bash
-keytool -genkey -alias selfsignedJwt -keyalg RSA -keysize 2048 -validity 700 -keypass changeit -storepass changeit -keystore jwt.jks
+keytool -genkey -alias selfsignedJwt -keyalg RSA -keysize 2048 -validity 700 -keypass changeit -storepass changeit -keystore jwtKeystore.jks
 ```
 Let’s understand above command
 
@@ -16,5 +16,5 @@ Let’s understand above command
 
 To view what is inside this keystore we can again use the keytool -list command as bellow.
 ```bash
-keytool -list -keystore jwt.jks
+keytool -list -keystore jwtKeystore.jks
 ```

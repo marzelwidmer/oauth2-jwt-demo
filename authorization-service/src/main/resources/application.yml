@@ -3,7 +3,7 @@ server:
 
 security:
   jwt:
-    key-store: classpath:jwt.jks
+    key-store: classpath:jwt/jwtKeystore.jks
     key-store-password: changeit
     key-pair-alias: selfsignedJwt
     key-pair-password: changeit

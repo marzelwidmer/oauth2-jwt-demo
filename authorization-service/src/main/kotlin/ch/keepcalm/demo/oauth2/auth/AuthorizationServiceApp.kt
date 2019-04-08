@@ -14,14 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 
-fun main(args: Array<String>) {
-    runApplication<AuthorizationService>(*args)
-}
-
 @SpringBootApplication
 @EnableHypermediaSupport(type = arrayOf(EnableHypermediaSupport.HypermediaType.HAL))
-class AuthorizationService
+class AuthorizationServiceApp
 
+fun main(args: Array<String>) {
+    runApplication<AuthorizationServiceApp>(*args)
+}
 
 //   _   _    _  _____ _____ ___    _    ____
 //  | | | |  / \|_   _| ____/ _ \  / \  / ___|
@@ -48,14 +47,14 @@ class IndexController {
 }
 
 @RestController
-@RequestMapping("/users", produces = [MediaTypes.HAL_JSON_UTF8_VALUE])
+@RequestMapping(value = ["/users"], produces = [MediaTypes.HAL_JSON_UTF8_VALUE])
 class UserController {
 
-    @GetMapping("/whoami")
+    @GetMapping(value = ["/whoami"])
     fun whoami(principal: Principal?) = principal?.let { ResponseEntity.ok(it) }
 
 
-    @GetMapping("/me")
+    @GetMapping(value = ["/me"])
     operator fun get(principal: Principal) = whoami(principal)
 }
 

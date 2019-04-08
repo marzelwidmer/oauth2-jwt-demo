@@ -18,7 +18,7 @@
 
 	<modules>
 		<module>authorization-service</module>
-		<module>resource-service</module>
+		<module>application-service</module>
 	</modules>
 
 </project>
