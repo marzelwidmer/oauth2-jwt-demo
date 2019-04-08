@@ -1,1 +1,20 @@
+server:
+  port: 8080
 
+
+security:
+  jwt:
+    public-key: classpath:public.txt
+
+spring:
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true
+
+# Management
+management:
+  endpoints:
+    web.exposure.include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS

@@ -1,4 +1,4 @@
-package ch.keepcalm.demo.oauth2
+package ch.keepcalm.demo.oauth2.auth
 
 import org.junit.Test
 import org.junit.runner.RunWith

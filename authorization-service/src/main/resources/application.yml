@@ -3,10 +3,10 @@ server:
 
 security:
   jwt:
-    key-store: classpath:keystore.jks
-    key-store-password: letmein
-    key-pair-alias: mytestkey
-    key-pair-password: changeme
+    key-store: classpath:jwt.jks
+    key-store-password: changeit
+    key-pair-alias: selfsignedJwt
+    key-pair-password: changeit
 
 spring:
   jackson:

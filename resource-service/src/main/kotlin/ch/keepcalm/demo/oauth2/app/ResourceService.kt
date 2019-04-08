@@ -1,4 +1,4 @@
-package ch.keepcalm.demo.oauth2
+package ch.keepcalm.demo.oauth2.app
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -15,7 +15,10 @@ import org.springframework.hateoas.server.mvc.add
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression
 import org.springframework.cloud.context.config.annotation.RefreshScope
+import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
+import java.security.Principal
 
 
 fun main(args: Array<String>) {
@@ -36,23 +39,40 @@ class ResourceService() {}
 open class Index : RepresentationModel<Index>()
 
 @RestController
-@RequestMapping("/api", produces = [MediaTypes.HAL_JSON_UTF8_VALUE])
-@RefreshScope
+@RequestMapping("/", produces = [MediaTypes.HAL_JSON_UTF8_VALUE])
 class IndexController {
-
-    @Value("\${app.feature:feature99}")
-    lateinit var feature: String
 
     @GetMapping
     fun api(): Index = Index()
             .apply {
+                add(UserController::class) {
+                    linkTo { whoami(null) } withRel "whoami"
+                }
                 add(IndexController::class) {
                     linkTo { api() } withRel IanaLinkRelations.SELF
-                    when (feature) {
-                        "feature1" -> add(Link("http://api.icndb.com/jokes/random", "chuck-norris"))
-                        "feature2" -> add(Link("http:/google.com", "google"))
-                        "feature3" -> add(Link("https://api.opendota.com/api/heroStats", "heros"))
-                    }
                 }
             }
+}
+
+@RestController
+@RequestMapping("/api", produces = [MediaTypes.HAL_JSON_UTF8_VALUE])
+class UserController {
+
+//    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("/whoami")
+    fun whoami(principal: Principal?) = principal?.let { ResponseEntity.ok(it) }
+
+
+}
+
+
+@RestController
+@RequestMapping("/me")
+class MeController {
+
+    @GetMapping
+    @PreAuthorize("hasRole('ROLE_USER')")
+    operator fun get(principal: Principal): ResponseEntity<Principal> {
+        return ResponseEntity.ok(principal)
+    }
 }

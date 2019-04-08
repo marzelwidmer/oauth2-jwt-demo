@@ -1,4 +1,4 @@
-package ch.keepcalm.demo.oauth2.auth
+package ch.keepcalm.demo.oauth2.auth.config
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
@@ -62,7 +62,7 @@ class AuthorizationServerConfiguration(private val dataSource: DataSource, priva
         val keyStoreKeyFactory = KeyStoreKeyFactory(jwtProperties.keyStore, jwtProperties.keyStorePassword.toCharArray())
         val keyPair = keyStoreKeyFactory.getKeyPair(jwtProperties.keyPairAlias, jwtProperties.keyPairPassword.toCharArray())
         val jwtAccessTokenConverter = JwtAccessTokenConverter()
-        JwtAccessTokenConverter().setKeyPair(keyPair)
+        jwtAccessTokenConverter.setKeyPair(keyPair)
         return jwtAccessTokenConverter
     }
 }

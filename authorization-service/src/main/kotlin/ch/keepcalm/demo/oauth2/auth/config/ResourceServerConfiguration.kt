@@ -1,4 +1,4 @@
-package ch.keepcalm.demo.oauth2.auth
+package ch.keepcalm.demo.oauth2.auth.config
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer
