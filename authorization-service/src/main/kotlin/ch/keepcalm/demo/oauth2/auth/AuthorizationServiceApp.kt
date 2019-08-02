@@ -31,7 +31,7 @@ fun main(args: Array<String>) {
 open class Index : RepresentationModel<Index>()
 
 @RestController
-@RequestMapping("/", produces = [MediaTypes.HAL_JSON_UTF8_VALUE])
+@RequestMapping("/", produces = [MediaTypes.HAL_JSON_VALUE])
 class IndexController {
 
     @GetMapping
@@ -47,7 +47,7 @@ class IndexController {
 }
 
 @RestController
-@RequestMapping(value = ["/users"], produces = [MediaTypes.HAL_JSON_UTF8_VALUE])
+@RequestMapping(value = ["/users"], produces = [MediaTypes.HAL_JSON_VALUE])
 class UserController {
 
     @GetMapping(value = ["/whoami"])

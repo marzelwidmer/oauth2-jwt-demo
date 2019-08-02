@@ -66,3 +66,4 @@ class AuthorizationServerConfiguration(private val dataSource: DataSource, priva
         return jwtAccessTokenConverter
     }
 }
+

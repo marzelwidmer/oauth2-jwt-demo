@@ -32,7 +32,7 @@ fun main(args: Array<String>) {
 open class Index : RepresentationModel<Index>()
 
 @RestController
-@RequestMapping(value = ["/"], produces = [MediaTypes.HAL_JSON_UTF8_VALUE])
+@RequestMapping(value = ["/"], produces = [MediaTypes.HAL_JSON_VALUE])
 class IndexController {
 
 //    @Secured("IS_AUTHENTICATED_ANONYMOUSLY")
@@ -52,7 +52,7 @@ class IndexController {
 }
 
 @RestController
-@RequestMapping("/api", produces = [MediaTypes.HAL_JSON_UTF8_VALUE])
+@RequestMapping("/api", produces = [MediaTypes.HAL_JSON_VALUE])
 class UserController {
 
     @PreAuthorize(value = "hasRole('ROLE_USER')")
