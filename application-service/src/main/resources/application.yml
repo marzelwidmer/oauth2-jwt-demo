@@ -1,7 +1,6 @@
 server:
   port: 8080
 
-
 security:
   jwt:
     public-key: classpath:jwt/public.txt
