@@ -21,7 +21,7 @@
         <evo.version>1.2.2</evo.version>
         <hamkrest.version>1.7.0.0</hamkrest.version>
         <spring-security-oauth2-autoconfigure.version>2.1.4.RELEASE</spring-security-oauth2-autoconfigure.version>
-        <commons-io.version>2.6</commons-io.version>
+        <commons-io.version>2.7</commons-io.version>
     </properties>
 
     <dependencies>
